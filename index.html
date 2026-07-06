@@ -225,16 +225,18 @@ function applyGrade(id, g){
 function topicStats(){
   const m = {};
   for(const c of CARDS){
-    const t = c.topic; if(!m[t]) m[t]={total:0,seen:0,mastered:0,due:0,correct:0,answered:0,weak:false,lapses:0};
+    const t = c.topic; if(!m[t]) m[t]={total:0,seen:0,mastered:0,due:0,correct:0,answered:0,weak:false,weakCount:0,lapses:0};
     const s = PROG[c.id]; const o=m[t]; o.total++;
-    if(c.weakBoost>1.2) o.weak=true;
+    if(c.weakBoost>=1.5) o.weakCount++;
     if(s && s.seen){ o.seen++; o.correct+=s.correct; o.answered+=s.correct+s.wrong; o.lapses+=s.lapses;
       if(s.interval>=21) o.mastered++;
       if(s.due<=now()) o.due++;
     } else { o.due++; }  // unseen counts as available
   }
   for(const t in m){ const o=m[t]; o.acc = o.answered? o.correct/o.answered : null;
-    o.masteryPct = o.total? Math.round(100*o.mastered/o.total):0; }
+    o.masteryPct = o.total? Math.round(100*o.mastered/o.total):0;
+    // WEAK badge: a real cluster of flagged cards, OR proven low accuracy once used
+    o.weak = (o.weakCount>=4 && o.weakCount/o.total>=0.06) || (o.answered>=10 && o.acc<0.65); }
   return m;
 }
 
