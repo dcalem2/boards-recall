@@ -1,10 +1,10 @@
 {
  "version": 1,
- "builtAt": "2026-07-06T13:15:23",
- "count": 856,
+ "builtAt": "2026-07-06T13:29:46",
+ "count": 858,
  "topics": {
   "Basic Science": 148,
-  "Pediatrics": 63,
+  "Pediatrics": 65,
   "Adult Reconstruction": 109,
   "Hand & Wrist": 101,
   "Spine": 84,
@@ -3384,6 +3384,10 @@
     "radiographic",
     "landmarks",
     "patellofemoral"
+   ],
+   "variants": [
+    "On a true lateral knee radiograph (condyles superimposed), where does the anatomic MPFL femoral origin sit relative to the posterior cortex line and Blumensaat's line?",
+    "You're setting an MPFL graft's femoral tunnel. Which radiographic point, and on which view, marks the anatomic femoral origin?"
    ]
   },
   {
@@ -3655,6 +3659,10 @@
     "foot",
     "ankle",
     "anatomy"
+   ],
+   "variants": [
+    "Six weeks after open tarsal tunnel release, the original plantar and forefoot symptoms have resolved but the patient now has profound numbness confined to the medial heel pad. Which nerve was injured during the exposure?",
+    "Paresthesia isolated to the medial heel (sparing the sole and toes) after tarsal tunnel surgery localizes to which nerve?"
    ]
   },
   {
@@ -3731,6 +3739,10 @@
     "spine",
     "surgical",
     "anatomy"
+   ],
+   "variants": [
+    "During an L4/5 transpsoas LLIF, the at-risk nerve lies slightly dorsal to the midpoint of the disc. Injuring it produces which motor and sensory deficit?",
+    "A patient has new quadriceps weakness and anteromedial thigh burning after a lateral L4/5 interbody fusion. Which nerve is it, and where did it sit relative to the disc?"
    ]
   },
   {
@@ -3754,6 +3766,10 @@
     "weakness",
     "spine",
     "neuroanatomy"
+   ],
+   "variants": [
+    "Axial T2 at L4/5 shows compression of the lateral, ventral fibers within the thecal sac. Which nerve root is affected, and what motor deficit results?",
+    "Why does a lateral-recess lesion at L4/5 weaken EHL rather than tibialis anterior? Name the root and the muscle."
    ]
   },
   {
@@ -3860,6 +3876,10 @@
     "pediatrics",
     "basic",
     "science"
+   ],
+   "variants": [
+    "A SH-IV ankle injury produces a physeal bar and angular deformity. Injury to which physeal zone (and its blood supply) causes the growth arrest, and how does that differ from the zone through which fractures propagate?",
+    "Fractures split the hypertrophic zone, but growth arrest follows injury to which zone?"
    ]
   },
   {
@@ -3990,6 +4010,10 @@
     "ankle",
     "cross-sectional",
     "anatomy"
+   ],
+   "variants": [
+    "After irreversible tibialis anterior loss and foot drop, a posterior tibialis tendon transfer is planned. On axial CT, which structure is the tibialis posterior, and how do you tell it from the FDL and the neurovascular bundle?",
+    "For foot drop from anterior compartment necrosis, which tendon is re-routed through the interosseous membrane to the dorsum, and how is it identified on cross-section?"
    ]
   },
   {
@@ -7923,6 +7947,10 @@
     "knee",
     "distal",
     "femoral"
+   ],
+   "variants": [
+    "An 11-year-old can't bear weight after a collision, with point tenderness over the distal femoral physis and a normal radiograph; WBC, CRP, and ESR are unremarkable. What is the next best test?",
+    "With negative plain films but physeal point tenderness and inability to bear weight, what confirms an occult physeal fracture?"
    ]
   },
   {
@@ -8005,6 +8033,10 @@
     "poor",
     "foot",
     "overgrowth"
+   ],
+   "variants": [
+    "A 14-year-old has an isolated enlarged 2nd toe with normal nails and closed physes. Which statement about surgical management is true, and what cosmetic outcome should you counsel?",
+    "In macrodactyly with closed physes, why is epiphysiodesis inadequate, and which procedure lowers the recurrence rate?"
    ]
   },
   {
@@ -8157,6 +8189,58 @@
     "pelvic",
     "osteotomy",
     "pediatric"
+   ]
+  },
+  {
+   "id": "35bea869c220",
+   "topic": "Pediatrics",
+   "subtopic": "Pediatric Osteomyelitis / Bone Tumor DDx",
+   "source": "peds_incorrects",
+   "date": "2026-07-06",
+   "kind": "incorrect",
+   "front": "Subacute Osteomyelitis Mimicking Tumor — Eosinophils ≠ Eosinophilic Granuloma (Need Langerhans Cells)",
+   "back": "Wrong answer: eosinophilic granuloma (I saw eosinophils on histology). Correct: **subacute osteomyelitis** (distal tibia metaphysis).\n\n**The histology trap — this is the whole lesson:** eosinophils appear in BOTH eosinophilic granuloma (EG/LCH) AND inflammatory/infectious conditions like subacute osteomyelitis. **Eosinophils alone do not make EG.** The **diagnostic cell of EG/Langerhans cell histiocytosis is the Langerhans cell**, not the eosinophil:\n- **Langerhans cells:** large, grooved/reniform **\"coffee-bean\" nuclei**, abundant pink cytoplasm\n- **CD1a+, S100+, Langerin (CD207)+**; **Birbeck granules** (\"tennis-racket\") on EM\n- Eosinophils are the *background*, not the diagnostic feature\n\nSubacute osteomyelitis shows a **mixed inflammatory infiltrate** — neutrophils, lymphocytes, plasma cells, and can include eosinophils — with reactive bone. Without coffee-bean Langerhans cells + CD1a/S100 positivity, don't call it EG.\n\n**Clinical picture favoring subacute osteomyelitis:** 10-year-old, **1–2 months** of progressive ankle pain, **no trauma**, metaphyseal location (distal tibia). Hematogenous seeding (transient bacteremia — otitis, pharyngitis, dental). Metaphysis is vulnerable because of the **sharp capillary turns near the physis** (slow flow → seeding).\n- Labs are often bland: Ceroni et al. — half had ↑ESR, **most had normal CRP, none had elevated WBC**; blood cultures negative, only 1/14 grew bacteria on standard culture (PCR added 8 more).\n- **Organisms: Kingella kingae** <4 years; **Staph aureus** in older children.\n- Brodie abscess = the localized lucent form of subacute osteomyelitis.\n- Treatment: 4–6 weeks IV/oral antibiotics.\n\n**Why not the tumors:** osteosarcoma/Ewing would show malignant cells (Ewing = small round blue cells, CD99+; osteosarcoma = malignant osteoid), not mixed inflammation. The subacute, months-long, atraumatic metaphyseal lesion with inflammatory histology = infection.\n\n**Anchor:** Don't diagnose eosinophilic granuloma off eosinophils — you need **Langerhans cells (coffee-bean nuclei, CD1a+/S100+/Birbeck granules).** Subacute osteomyelitis mimics tumor and has mixed inflammation ± eosinophils. Metaphyseal, subacute, atraumatic in a child → think subacute osteomyelitis (Kingella <4, Staph older).",
+   "correctAnswer": "subacute osteomyelitis (distal tibia metaphysis)",
+   "wrongAnswer": "eosinophilic granuloma (I saw eosinophils on histology)",
+   "mcqEligible": true,
+   "weakBoost": 1.0,
+   "keywords": [
+    "osteomyelitis",
+    "tumor",
+    "subacute",
+    "mimicking",
+    "eosinophils",
+    "eosinophilic",
+    "granuloma",
+    "need",
+    "langerhans",
+    "cells",
+    "pediatric",
+    "bone"
+   ]
+  },
+  {
+   "id": "043d617096fd",
+   "topic": "Pediatrics",
+   "subtopic": "DDH / Closed Reduction Quality",
+   "source": "peds_incorrects",
+   "date": "2026-07-06",
+   "kind": "incorrect",
+   "front": "DDH Arthrogram — Medial Dye Pool >6–7 mm = Failed Reduction (Don't Accept It)",
+   "back": "\"Inappropriate treatment\" (EXCEPT-style) question — I misread which option was the wrong one. I picked \"5 months, rigid abduction brace\" (that's **appropriate**). The genuinely inappropriate option was **\"17 months, closed reduction, arthrogram with an 8 mm medial dye pool, spica\"** — because an **8 mm dye pool means the reduction failed.**\n\n**The tested metric — medial dye pool on intraoperative arthrogram:**\n- **≤ 5–6 mm** (some say <7 mm) = **concentric, adequate reduction** → spica is fine.\n- **> 6–7 mm** = **inadequate reduction, predictive of failure.** Race et al.: dye pool **>7 mm → 57% osteonecrosis.** Accepting an 8 mm pool and casting is wrong — you must **convert to open reduction.**\n\nSo at 17 months closed reduction is age-appropriate, but **only if the arthrogram confirms a concentric reduction (small dye pool).** An 8 mm pool + spica = accepting a bad reduction = inappropriate.\n\n**Why my pick (option 5) was actually appropriate:** under 6 months, DDH is treated with a **Pavlik harness**, and a **rigid abduction brace is acceptable — especially after Pavlik failure.** A brace at 5 months is a legitimate option, not the error.\n\n**Age ladder (reinforces [16]):** <6 mo → Pavlik (rigid abduction brace if Pavlik fails); 6 mo–~18 mo → closed reduction + arthrogram + spica (confirm small dye pool); older / failed closed / non-concentric → open reduction ± femoral (VDRO) ± pelvic osteotomy.\n\n**Anchor:** On a DDH arthrogram, **medial dye pool >6–7 mm = the reduction is not concentric → open reduction**, don't spica it (57% AVN if you accept >7 mm). A rigid abduction brace <6 months (post-Pavlik-failure) is appropriate. Read the *quality of reduction*, not just the age.",
+   "correctAnswer": null,
+   "wrongAnswer": null,
+   "mcqEligible": false,
+   "weakBoost": 1.0,
+   "keywords": [
+    "reduction",
+    "arthrogram",
+    "medial",
+    "pool",
+    "failed",
+    "accept",
+    "closed",
+    "quality"
    ]
   },
   {
@@ -8340,6 +8424,10 @@
     "traversing",
     "spine",
     "pathophysiology"
+   ],
+   "variants": [
+    "In adult isthmic spondylolisthesis, dorsal foot tingling from L5 involvement is produced by which type of stenosis, compressing which root, and by what accumulating tissue?",
+    "Isthmic spondylolisthesis: central vs foraminal stenosis and traversing vs exiting root. Which pairing explains the exiting-root symptoms, and what tissue causes it?"
    ]
   },
   {
@@ -8368,6 +8456,10 @@
     "genitofemoral",
     "spine",
     "lateral"
+   ],
+   "variants": [
+    "After a lateral interbody fusion, a patient reports groin and inner-thigh burning. Which lumbar plexus nerve is injured, and where does it lie on the psoas?",
+    "Map the symptom: groin plus medial-thigh burning after LLIF localizes to which nerve, and what are its roots?"
    ]
   },
   {
@@ -8501,6 +8593,10 @@
     "penile",
     "pain",
     "spine"
+   ],
+   "variants": [
+    "At the midaxis of the L3-L4 disc in a transpsoas approach, which nerve runs on the anterior psoas surface, and what is its injury pattern?",
+    "A patient describes a sensation of liquid trickling down the medial thigh after XLIF. Which nerve is it, and where is it most vulnerable?"
    ]
   },
   {
@@ -9940,6 +10036,10 @@
     "spine",
     "lumbar",
     "surgical"
+   ],
+   "variants": [
+    "For an L4/5 paracentral disc herniation, which approach gives direct access, and why does herniation location, not tissue disruption, dictate the choice?",
+    "Approach by herniation location: which approach for a paracentral L4/5 disc, and which for a far-lateral one?"
    ]
   },
   {
@@ -11165,6 +11265,10 @@
     "landmarks",
     "reconstruction",
     "anatomy"
+   ],
+   "variants": [
+    "Relative to the resident's ridge and the bifurcate ridge, where does the anatomic ACL femoral tunnel sit? Give the millimeters.",
+    "Name the two femoral bony ridges that define anatomic ACL tunnel placement and the AM/PL footprints."
    ]
   },
   {
@@ -11209,6 +11313,10 @@
     "reconstruction",
     "technical",
     "errors"
+   ],
+   "variants": [
+    "Walk the full ACL tunnel malposition map: for the femoral and tibial tunnels, what happens when each is too anterior versus too posterior?",
+    "Which tibial tunnel malposition is the most common error, and what motion deficit does it cause?"
    ]
   },
   {
@@ -11298,6 +11406,10 @@
     "delayed",
     "recovery",
     "reconstruction"
+   ],
+   "variants": [
+    "The classic ACL bone-bruise pattern (mid lateral femoral condyle plus posterior lateral tibial plateau) predicts which post-op outcome, and what does it NOT predict?",
+    "Which post-reconstruction problem tracks with the classic ACL bone-bruise pattern, and what are the other risk factors for it?"
    ]
   },
   {
@@ -11411,6 +11523,10 @@
     "malposition",
     "technical",
     "errors"
+   ],
+   "variants": [
+    "A reconstructed ACL feels fine in extension but grows progressively tight in flexion. Where is the femoral tunnel malpositioned, and what mechanism explains it?",
+    "Explain the cam effect: why does an anteriorly placed femoral tunnel tighten the graft in flexion but not extension?"
    ]
   },
   {
@@ -11460,6 +11576,10 @@
     "approaches",
     "milestone",
     "exam"
+   ],
+   "variants": [
+    "For central articular impaction in a pilon fracture, the anteromedial approach is chosen. What is its internervous plane?",
+    "Which two nerves bound the anteromedial pilon approach, and how does that plane differ from the anterolateral approach?"
    ]
   },
   {
@@ -11537,6 +11657,10 @@
     "superficial",
     "knee",
     "tibia"
+   ],
+   "variants": [
+    "After tibial IM nailing a patient has EHL weakness and first dorsal web-space numbness (the 'dropped hallux'). Which peroneal branch is involved, and what caused it?",
+    "The 'dropped hallux' pattern after distal tibial interlocking implicates the deep or the superficial peroneal branch?"
    ]
   },
   {
@@ -11560,6 +11684,10 @@
     "femoral",
     "wall",
     "culprit"
+   ],
+   "variants": [
+    "Independent of implant, which fracture feature most predicts varus collapse and sliding after intertrochanteric fixation, and why?",
+    "A sliding hip screw buttresses against which structure, and what failure mode follows if that structure is fractured?"
    ]
   },
   {
@@ -13304,6 +13432,10 @@
     "screws",
     "endanger",
     "knee"
+   ],
+   "variants": [
+    "Percutaneous distal screws on a long lateral proximal-tibia locking plate endanger which nerve, common or superficial peroneal, and why is it the distal-third one?",
+    "During distal percutaneous fixation of a lateral tibial plate, which nerve lies closest to the distal holes, and how do you protect it?"
    ]
   },
   {
@@ -13470,6 +13602,10 @@
     "gives",
     "external",
     "internal"
+   ],
+   "variants": [
+    "On CT the injured femur's version change reads -8 minus 5 = -13 degrees. Is that internal or external malrotation, and which direction is more symptomatic?",
+    "A decrease in anteversion relative to the normal side after femoral nailing indicates internal or external malrotation?"
    ]
   },
   {
@@ -13751,6 +13887,10 @@
     "difference",
     "needs",
     "correction"
+   ],
+   "variants": [
+    "On CT scanogram the operative side reads hip 18, knee 18; the normal side reads hip 9.2, knee 3.2. Compute version on each side (add or subtract?) and decide whether de-rotation is needed.",
+    "Femoral version equals neck anteversion ___ condylar rotation (add or subtract?), and what side-to-side difference requires de-rotation?"
    ]
   },
   {
@@ -13829,6 +13969,10 @@
     "roots",
     "ankle",
     "foot"
+   ],
+   "variants": [
+    "Name the subcutaneous nerve crossing the field in a proximal lateral fibular approach, its two terminal sensory branches, and where it pierces the deep fascia.",
+    "Which nerve becomes subcutaneous in the lower third of the leg, 5-7 cm above the lateral malleolus, and what are its terminal branches and roots?"
    ]
   },
   {
@@ -13985,6 +14129,10 @@
     "proximally",
     "common",
     "knee"
+   ],
+   "variants": [
+    "A single lateral perifibular fasciotomy stops distal to the fibular neck. Which nerve is at risk proximally, and why is it not the common peroneal?",
+    "During proximal dissection of a lateral perifibular fasciotomy, which nerve must you identify and protect?"
    ]
   },
   {
@@ -15386,6 +15534,10 @@
     "recurrent",
     "patellar",
     "instability"
+   ],
+   "variants": [
+    "When is MPFL reconstruction alone insufficient for recurrent patellar instability? Which bony risk factors mandate adding a tibial tubercle osteotomy, and which osteotomy for each?",
+    "Patella alta and a TT-TG over 20 mm each drive which specific osteotomy alongside MPFL reconstruction?"
    ]
   },
   {
@@ -16031,6 +16183,10 @@
     "abnormalities",
     "characterize",
     "dysplasia"
+   ],
+   "variants": [
+    "In hip dysplasia, which version abnormalities are present at the femur and the acetabulum, and how does that change THA planning?",
+    "Combined excess femoral and acetabular anteversion in dysplasia produces which instability direction and labral injury pattern?"
    ]
   },
   {

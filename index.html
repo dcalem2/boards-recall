@@ -84,6 +84,7 @@
   .chip.lp{color:var(--good);background:rgba(55,201,139,.12);border-color:rgba(55,201,139,.3)}
   .front{font-size:20px;font-weight:600;line-height:1.35}
   .subtopic{color:var(--dim);font-size:12.5px;margin-top:8px}
+  .ask{color:var(--accent);font-size:13.5px;margin-top:12px;font-style:italic}
   .divider{height:1px;background:var(--line);margin:16px 0}
   .back{font-size:15.5px;line-height:1.6;overflow-y:auto}
   .back b,.back strong{color:#fff}
@@ -415,10 +416,31 @@ function startWeakFocus(){
   render();
 }
 
+// conceptual prompt framings rotated on free-recall so the same fact is
+// approached from a different direction each time (understanding, not position)
+const PROMPTS = [
+  "",
+  "Answer in your own words first, then reveal.",
+  "Justify your answer before checking.",
+  "State the reasoning, not just the fact.",
+  "Explain it as if teaching a junior, then check.",
+  "Why is this true? Reveal to confirm."
+];
+// choose a fresh "view" each time a card appears: a stem (original or a
+// reworded variant), a format (MCQ or recall for eligible cards), and a framing
+function pickView(card){
+  const stems = [card.front, ...(Array.isArray(card.variants)?card.variants:[])];
+  const stem = stems[Math.floor(Math.random()*stems.length)];
+  let mode = (CFG.mcq && card.mcqEligible && card.correctAnswer)
+    ? (Math.random()<0.5 ? 'mcq' : 'recall') : 'recall';
+  const ask = mode==='recall' ? PROMPTS[Math.floor(Math.random()*PROMPTS.length)] : "";
+  return { stem, mode, ask, reworded: stem!==card.front };
+}
+
 function renderCard(){
   const card = session.queue[session.i];
   const s = st(card.id);
-  const useMcq = CFG.mcq && card.mcqEligible && card.correctAnswer;
+  const view = pickView(card);
   const prog = Math.round(100*session.i/session.queue.length);
   const isLP = card.kind==="learning";
 
@@ -435,9 +457,10 @@ function renderCard(){
       <div class="pcount">${session.i+1}/${session.queue.length}</div>
     </div>
     <div class="card">
-      <span class="chip ${isLP?'lp':''}">${isLP?'Learning point':'Prior incorrect'} · ${enc(card.topic)}</span>
-      <div class="front">${enc(card.front)}</div>
+      <span class="chip ${isLP?'lp':''}">${isLP?'Learning point':'Prior incorrect'} · ${enc(card.topic)}${view.reworded?' · reframed':''}</span>
+      <div class="front">${enc(view.stem)}</div>
       ${card.subtopic?`<div class="subtopic">${enc(card.subtopic)}</div>`:""}
+      ${view.ask?`<div class="ask">${enc(view.ask)}</div>`:""}
       <div id="body"></div>
       ${histStr}
     </div>
@@ -445,7 +468,7 @@ function renderCard(){
   `;
   document.getElementById("quit").onclick = ()=>{ session=null; render(); };
 
-  if(useMcq) renderMcq(card); else renderRecall(card);
+  if(view.mode==='mcq') renderMcq(card); else renderRecall(card);
 }
 
 function renderMcq(card){
