@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Boards">
+<meta name="theme-color" content="#0f1720">
+<title>Written Boards — Recall</title>
+<style>
+  :root{
+    --bg:#0f1720; --panel:#182230; --panel2:#1f2c3d; --line:#2b3a4d;
+    --txt:#e8eef5; --dim:#93a4b8; --accent:#3d9bff; --accent2:#2b7fe0;
+    --good:#37c98b; --easy:#4aa3ff; --hard:#f0a83a; --again:#f0605d;
+    --gold:#f0c33a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--bg); color:var(--txt);
+    font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overscroll-behavior-y:contain;
+  }
+  #app{max-width:640px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+  header{
+    display:flex;align-items:center;gap:10px;padding:14px 16px 10px;
+    position:sticky;top:0;background:linear-gradient(var(--bg),rgba(15,23,32,.85));
+    backdrop-filter:blur(8px);z-index:5;
+  }
+  header .title{font-weight:700;font-size:17px;letter-spacing:.2px}
+  header .sub{color:var(--dim);font-size:12px}
+  .spacer{flex:1}
+  .iconbtn{background:var(--panel);border:1px solid var(--line);color:var(--txt);
+    border-radius:10px;padding:8px 11px;font-size:14px;font-weight:600}
+  .iconbtn:active{background:var(--panel2)}
+  main{flex:1;padding:6px 16px 40px;display:flex;flex-direction:column}
+  .hide{display:none!important}
+
+  /* ---- home ---- */
+  .ring-wrap{display:flex;flex-direction:column;align-items:center;margin:18px 0 6px}
+  .ring{position:relative;width:190px;height:190px}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .center{position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center}
+  .ring .big{font-size:44px;font-weight:800;line-height:1}
+  .ring .lbl{color:var(--dim);font-size:13px;margin-top:4px}
+  .cta{display:block;width:100%;border:none;border-radius:16px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;font-size:19px;font-weight:700;padding:18px;margin:16px 0 6px;
+    box-shadow:0 6px 20px rgba(61,155,255,.25)}
+  .cta:active{transform:translateY(1px)}
+  .cta.sub{background:var(--panel);color:var(--txt);border:1px solid var(--line);
+    box-shadow:none;font-size:16px;padding:14px;margin-top:10px}
+  .stat-row{display:flex;gap:10px;margin:14px 0}
+  .stat{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:12px;text-align:center}
+  .stat .n{font-size:22px;font-weight:800}
+  .stat .k{color:var(--dim);font-size:11px;margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+  .section-h{color:var(--dim);font-size:12px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.6px;margin:20px 2px 8px}
+  .topic{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:11px 13px;margin-bottom:8px}
+  .topic .top{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+  .topic .cnt{color:var(--dim);font-size:12px;font-weight:500}
+  .topic.weak .flag{color:var(--gold);font-size:11px;font-weight:700;
+    border:1px solid var(--gold);border-radius:6px;padding:1px 6px}
+  .bar{height:7px;border-radius:4px;background:var(--panel2);margin-top:9px;overflow:hidden}
+  .bar > i{display:block;height:100%;border-radius:4px;
+    background:linear-gradient(90deg,var(--again),var(--hard),var(--good))}
+  .topic.picked{outline:2px solid var(--accent)}
+
+  /* ---- study ---- */
+  .progress-top{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+  .pbar{flex:1;height:6px;background:var(--panel2);border-radius:4px;overflow:hidden}
+  .pbar > i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+  .pcount{color:var(--dim);font-size:12px;font-variant-numeric:tabular-nums}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;
+    padding:20px;flex:1;display:flex;flex-direction:column;min-height:320px}
+  .chip{align-self:flex-start;font-size:11px;font-weight:700;color:var(--accent);
+    background:rgba(61,155,255,.12);border:1px solid rgba(61,155,255,.3);
+    border-radius:999px;padding:3px 10px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:14px}
+  .chip.lp{color:var(--good);background:rgba(55,201,139,.12);border-color:rgba(55,201,139,.3)}
+  .front{font-size:20px;font-weight:600;line-height:1.35}
+  .subtopic{color:var(--dim);font-size:12.5px;margin-top:8px}
+  .divider{height:1px;background:var(--line);margin:16px 0}
+  .back{font-size:15.5px;line-height:1.6;overflow-y:auto}
+  .back b,.back strong{color:#fff}
+  .back ul{margin:8px 0;padding-left:20px}
+  .back li{margin:3px 0}
+  .back code{background:var(--panel2);padding:1px 5px;border-radius:5px;font-size:13px}
+  .back h4{margin:14px 0 4px;font-size:14px;color:var(--accent)}
+  .hist{color:var(--dim);font-size:12px;margin-top:12px;display:flex;gap:12px;flex-wrap:wrap}
+  .hist .g{color:var(--good)} .hist .b{color:var(--again)}
+
+  /* MCQ */
+  .opts{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+  .opt{text-align:left;background:var(--panel2);border:1px solid var(--line);
+    color:var(--txt);border-radius:12px;padding:14px 15px;font-size:15px;line-height:1.4}
+  .opt:active{background:#26374d}
+  .opt.correct{border-color:var(--good);background:rgba(55,201,139,.15)}
+  .opt.wrong{border-color:var(--again);background:rgba(240,96,93,.15)}
+  .opt.dim{opacity:.55}
+  .opt .mk{font-weight:700;margin-right:8px;color:var(--dim)}
+
+  /* footer controls */
+  .controls{margin-top:14px}
+  .reveal-btn{width:100%;border:none;border-radius:14px;background:var(--accent);
+    color:#fff;font-size:17px;font-weight:700;padding:16px}
+  .reveal-btn:active{transform:translateY(1px)}
+  .grades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .grade{border:none;border-radius:13px;color:#08121c;font-weight:800;
+    padding:14px 4px;font-size:14px;display:flex;flex-direction:column;gap:2px;align-items:center}
+  .grade small{font-weight:600;font-size:10px;opacity:.75}
+  .g-again{background:var(--again);color:#fff} .g-hard{background:var(--hard)}
+  .g-good{background:var(--good)} .g-easy{background:var(--easy);color:#fff}
+  .mcq-next{width:100%;border:none;border-radius:14px;background:var(--accent);
+    color:#fff;font-size:17px;font-weight:700;padding:16px}
+
+  /* done / empty */
+  .center-msg{flex:1;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;gap:8px;color:var(--dim)}
+  .center-msg .em{font-size:40px} .center-msg h2{color:var(--txt);margin:6px 0 0}
+
+  /* settings sheet */
+  .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;display:flex;align-items:flex-end}
+  .sheet{background:var(--panel);width:100%;max-width:640px;margin:0 auto;
+    border-radius:18px 18px 0 0;padding:20px 18px 30px;border-top:1px solid var(--line)}
+  .sheet h3{margin:0 0 14px}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border:none}
+  .row .lab{font-size:15px}.row .desc{color:var(--dim);font-size:12px;margin-top:2px}
+  .switch{width:52px;height:30px;border-radius:999px;background:var(--panel2);position:relative;border:1px solid var(--line)}
+  .switch.on{background:var(--good)}
+  .switch i{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .18s}
+  .switch.on i{left:24px}
+  .stepper{display:flex;align-items:center;gap:12px}
+  .stepper button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel2);color:var(--txt);font-size:20px;font-weight:700}
+  .danger{color:var(--again);background:none;border:1px solid var(--again);
+    border-radius:10px;padding:10px 14px;font-weight:600;width:100%;margin-top:16px}
+  .tiny{color:var(--dim);font-size:11px;text-align:center;margin-top:16px;line-height:1.5}
+  .banner{background:rgba(240,168,58,.12);border:1px solid var(--hard);color:#f6d08a;
+    border-radius:12px;padding:11px 13px;font-size:13px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div>
+      <div class="title">Recall</div>
+      <div class="sub" id="subhead">loading…</div>
+    </div>
+    <div class="spacer"></div>
+    <button class="iconbtn" id="statsBtn">Stats</button>
+    <button class="iconbtn" id="gearBtn">⚙</button>
+  </header>
+  <main id="main"></main>
+</div>
+
+<script>
+/* ============================================================= *
+ *  Written Boards — intelligent spaced-repetition recall app    *
+ *  Self-contained. Progress in localStorage keyed by card id.   *
+ *  Deck fetched from deck.json (same folder) each launch and    *
+ *  merged so new incorrects appear without wiping progress.     *
+ * ============================================================= */
+const LS_PROG = "wb_progress_v2";
+const LS_CFG  = "wb_config_v2";
+const DAY = 86400e3, MIN = 60e3;
+const now = () => Date.now();
+
+const DEFAULT_CFG = { mcq:true, newPerSession:30, sessionSize:40, showHistory:true };
+let CFG = load(LS_CFG, DEFAULT_CFG);
+let PROG = load(LS_PROG, {});     // id -> state
+let DECK = null;                  // {cards:[...], topics, weakTerms}
+let CARDS = [];                   // active card array
+let byId = {};
+
+let session = null;               // {queue, i, results}
+let filterTopic = null;
+
+function load(k,d){ try{ const v=JSON.parse(localStorage.getItem(k)); return v??d; }catch{ return d; } }
+function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+function saveProg(){ save(LS_PROG, PROG); }
+function saveCfg(){ save(LS_CFG, CFG); }
+
+/* ---------- SM-2 state ---------- */
+function freshState(){ return { ease:2.3, interval:0, due:0, reps:0, lapses:0,
+  seen:0, correct:0, wrong:0, hist:[], last:0, learningLeft:0 }; }
+function st(id){ return PROG[id] || (PROG[id]=freshState()); }
+
+// grade: 1 again, 3 hard, 4 good, 5 easy
+function applyGrade(id, g){
+  const s = st(id), card = byId[id];
+  s.seen++; s.last = now();
+  const good = g>=3;
+  if(good) s.correct++; else s.wrong++;
+  s.hist.push(g); if(s.hist.length>12) s.hist.shift();
+
+  if(g===1){                       // Again → relearn this session
+    s.lapses++; s.reps=0;
+    s.ease = Math.max(1.3, s.ease-0.2);
+    s.interval = 0; s.learningLeft = 2;   // must clear 2 more times today
+    s.due = now() + 1*MIN;
+  } else {
+    if(s.learningLeft>0 && g===3){ s.learningLeft=Math.max(0,s.learningLeft-1);
+      s.due = now()+6*MIN; return; }
+    s.learningLeft = 0;
+    s.reps++;
+    if(g===3) s.ease = Math.max(1.3, s.ease-0.15);
+    if(g===5) s.ease = s.ease+0.15;
+    let iv;
+    if(s.reps===1) iv = g===5?3:1;
+    else if(s.reps===2) iv = g===5?7:3;
+    else iv = s.interval * s.ease * (g===3?0.7:1) * (g===5?1.3:1);
+    iv = Math.max(1, Math.round(iv));
+    s.interval = iv;
+    s.due = now() + iv*DAY;
+  }
+}
+
+/* ---------- topic analytics ---------- */
+function topicStats(){
+  const m = {};
+  for(const c of CARDS){
+    const t = c.topic; if(!m[t]) m[t]={total:0,seen:0,mastered:0,due:0,correct:0,answered:0,weak:false,lapses:0};
+    const s = PROG[c.id]; const o=m[t]; o.total++;
+    if(c.weakBoost>1.2) o.weak=true;
+    if(s && s.seen){ o.seen++; o.correct+=s.correct; o.answered+=s.correct+s.wrong; o.lapses+=s.lapses;
+      if(s.interval>=21) o.mastered++;
+      if(s.due<=now()) o.due++;
+    } else { o.due++; }  // unseen counts as available
+  }
+  for(const t in m){ const o=m[t]; o.acc = o.answered? o.correct/o.answered : null;
+    o.masteryPct = o.total? Math.round(100*o.mastered/o.total):0; }
+  return m;
+}
+
+/* ---------- session builder (the "intelligence") ---------- */
+function buildSession(topic){
+  filterTopic = topic || null;
+  const pool = CARDS.filter(c => !topic || c.topic===topic);
+  const tStats = topicStats();
+
+  const dueSeen = [], newCards = [];
+  for(const c of pool){
+    const s = PROG[c.id];
+    if(s && s.seen){ if(s.due<=now()) dueSeen.push(c); }
+    else newCards.push(c);
+  }
+  // priority score — higher surfaces first
+  const score = c => {
+    const s = PROG[c.id]; const to = tStats[c.topic]||{};
+    let p = c.weakBoost || 1;                         // WEAK_AREAS boost
+    const topicNeed = to.acc==null ? 1.15 : 1/(to.acc+0.35);  // weak topics ↑
+    p *= topicNeed;
+    if(s){
+      p *= 1 + (s.lapses||0)*0.6;                     // repeatedly wrong ↑
+      const over = (now()-s.due)/DAY; if(over>0) p *= 1+Math.min(over/7,1.5);
+      const recentWrong = s.hist.slice(-3).filter(g=>g===1).length;
+      p *= 1 + recentWrong*0.4;
+    }
+    return p;
+  };
+  dueSeen.sort((a,b)=>score(b)-score(a));
+  newCards.sort((a,b)=>score(b)-score(a));
+
+  const queue = [];
+  queue.push(...dueSeen.slice(0, CFG.sessionSize));
+  const room = CFG.sessionSize - queue.length;
+  const newTake = Math.min(room, CFG.newPerSession, newCards.length);
+  queue.push(...newCards.slice(0, newTake));
+  // if still room and no new left, top up with soon-due seen cards
+  if(queue.length < CFG.sessionSize){
+    const extra = pool.filter(c=>{const s=PROG[c.id]; return s&&s.seen&&s.due>now();})
+      .sort((a,b)=>PROG[a.id].due-PROG[b.id].due)
+      .slice(0, CFG.sessionSize-queue.length);
+    queue.push(...extra);
+  }
+  // interleave so topics/new-old mix (avoid long runs of one topic)
+  shuffleInterleave(queue);
+  session = { queue, i:0, results:[], startedTopic:topic||"All topics", answered:0, right:0 };
+  render();
+}
+function shuffleInterleave(a){
+  // light shuffle: group by topic then round-robin
+  const groups={}; a.forEach(c=>{(groups[c.topic]=groups[c.topic]||[]).push(c);});
+  Object.values(groups).forEach(g=>g.sort(()=>Math.random()-.5));
+  const keys=Object.keys(groups); let out=[], added=true;
+  while(added){ added=false; for(const k of keys){ if(groups[k].length){ out.push(groups[k].shift()); added=true; } } }
+  a.length=0; a.push(...out);
+}
+
+/* ---------- MCQ distractor generation (real facts only) ---------- */
+function buildOptions(card){
+  const correct = card.correctAnswer;
+  const set = new Map(); set.set(norm(correct), correct);
+  if(card.wrongAnswer && norm(card.wrongAnswer)!==norm(correct))
+    set.set(norm(card.wrongAnswer), card.wrongAnswer);
+  // sample other real short answers from same topic, then any topic
+  const pools = [
+    CARDS.filter(c=>c.topic===card.topic && c.id!==card.id && c.correctAnswer),
+    CARDS.filter(c=>c.id!==card.id && c.correctAnswer)
+  ];
+  for(const pool of pools){
+    const shuffled = pool.slice().sort(()=>Math.random()-.5);
+    for(const c of shuffled){
+      if(set.size>=4) break;
+      const a=c.correctAnswer, k=norm(a);
+      if(!set.has(k) && Math.abs(a.length-correct.length)<80) set.set(k,a);
+    }
+    if(set.size>=4) break;
+  }
+  const opts = [...set.values()].slice(0,4).sort(()=>Math.random()-.5);
+  return { opts, correct };
+}
+const norm = s => (s||"").toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,40);
+
+/* ---------- tiny safe markdown ---------- */
+function md(t){
+  let h = t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const lines = h.split("\n"); let out=[], inUl=false;
+  for(let ln of lines){
+    ln = ln.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`]+)`/g,"<code>$1</code>");
+    const bullet = ln.match(/^\s*[-*]\s+(.*)/);
+    const head = ln.match(/^#{2,4}\s+(.*)/);
+    if(bullet){ if(!inUl){out.push("<ul>");inUl=true;} out.push("<li>"+bullet[1]+"</li>"); continue; }
+    if(inUl){ out.push("</ul>"); inUl=false; }
+    if(head){ out.push("<h4>"+head[1]+"</h4>"); continue; }
+    if(ln.trim()==="") out.push("<br>"); else out.push("<div>"+ln+"</div>");
+  }
+  if(inUl) out.push("</ul>");
+  return out.join("");
+}
+
+/* ============================================================= *
+ *  RENDER                                                        *
+ * ============================================================= */
+const main = document.getElementById("main");
+const subhead = document.getElementById("subhead");
+
+function render(){
+  if(!session) return renderHome();
+  if(session.i >= session.queue.length) return renderDone();
+  renderCard();
+}
+
+function renderHome(){
+  const due = CARDS.filter(c=>{const s=PROG[c.id];return !s||!s.seen|| s.due<=now();}).length;
+  const seen = CARDS.filter(c=>PROG[c.id]&&PROG[c.id].seen).length;
+  const mastered = CARDS.filter(c=>{const s=PROG[c.id];return s&&s.interval>=21;}).length;
+  subhead.textContent = `${CARDS.length} cards · ${seen} started`;
+
+  const pct = CARDS.length? Math.round(100*mastered/CARDS.length):0;
+  const R=84, C=2*Math.PI*R, off=C*(1-pct/100);
+
+  const ts = topicStats();
+  const order = Object.entries(ts).sort((a,b)=> (b[1].due - a[1].due));
+
+  main.innerHTML = `
+    ${session===null && CARDS.length===0 ? `<div class="banner">No deck loaded. Make sure deck.json is in the same folder.</div>`:""}
+    <div class="ring-wrap">
+      <div class="ring">
+        <svg width="190" height="190">
+          <circle cx="95" cy="95" r="${R}" stroke="#22303f" stroke-width="14" fill="none"/>
+          <circle cx="95" cy="95" r="${R}" stroke="url(#g)" stroke-width="14" fill="none"
+            stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/>
+          <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#3d9bff"/><stop offset="1" stop-color="#37c98b"/>
+          </linearGradient></defs>
+        </svg>
+        <div class="center"><div class="big">${pct}%</div><div class="lbl">mastered</div></div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n" style="color:var(--accent)">${due}</div><div class="k">Due now</div></div>
+      <div class="stat"><div class="n">${seen}</div><div class="k">Started</div></div>
+      <div class="stat"><div class="n" style="color:var(--good)">${mastered}</div><div class="k">Mastered</div></div>
+    </div>
+    <button class="cta" id="startAll">Study ${Math.min(CFG.sessionSize,Math.max(due,1))} due cards</button>
+    <button class="cta sub" id="startWeak">Focus my weak areas</button>
+
+    <div class="section-h">By topic — tap to study</div>
+    <div id="topics">
+      ${order.map(([t,o])=>{
+        const acc = o.acc==null? "—" : Math.round(o.acc*100)+"%";
+        return `<div class="topic ${o.weak?'weak':''}" data-t="${enc(t)}">
+          <div class="top"><span>${enc(t)}</span>
+            ${o.weak?'<span class="flag">WEAK</span>':''}
+            <span class="spacer"></span>
+            <span class="cnt">${o.due} due · ${o.total} · ${acc}</span></div>
+          <div class="bar"><i style="width:${o.masteryPct}%"></i></div>
+        </div>`;
+      }).join("")}
+    </div>
+    <div class="tiny">Cards you miss resurface sooner. Weak topics and repeated misses are shown more often; mastered cards fade back. Deck last built: ${DECK?DECK.builtAt:"—"}</div>
+  `;
+  document.getElementById("startAll").onclick = ()=>buildSession(null);
+  document.getElementById("startWeak").onclick = ()=>startWeakFocus();
+  document.querySelectorAll("#topics .topic").forEach(el=>
+    el.onclick=()=>buildSession(dec(el.dataset.t)));
+}
+
+function startWeakFocus(){
+  // temporarily bias: build from whole deck; scoring already favors weak.
+  buildSession(null);
+  // reorder queue to strictly weakest-first
+  session.queue.sort((a,b)=> (b.weakBoost- a.weakBoost) ||
+     ((PROG[b.id]?.lapses||0)-(PROG[a.id]?.lapses||0)));
+  session.startedTopic="Weak focus";
+  render();
+}
+
+function renderCard(){
+  const card = session.queue[session.i];
+  const s = st(card.id);
+  const useMcq = CFG.mcq && card.mcqEligible && card.correctAnswer;
+  const prog = Math.round(100*session.i/session.queue.length);
+  const isLP = card.kind==="learning";
+
+  const histStr = (CFG.showHistory && s.seen)
+    ? `<div class="hist"><span>seen ${s.seen}×</span>
+        <span class="g">✓ ${s.correct}</span><span class="b">✗ ${s.wrong}</span>
+        ${s.lapses?`<span>lapses ${s.lapses}</span>`:""}
+        ${s.interval?`<span>next ~${s.interval}d</span>`:""}</div>` : "";
+
+  main.innerHTML = `
+    <div class="progress-top">
+      <button class="iconbtn" id="quit">✕</button>
+      <div class="pbar"><i style="width:${prog}%"></i></div>
+      <div class="pcount">${session.i+1}/${session.queue.length}</div>
+    </div>
+    <div class="card">
+      <span class="chip ${isLP?'lp':''}">${isLP?'Learning point':'Prior incorrect'} · ${enc(card.topic)}</span>
+      <div class="front">${enc(card.front)}</div>
+      ${card.subtopic?`<div class="subtopic">${enc(card.subtopic)}</div>`:""}
+      <div id="body"></div>
+      ${histStr}
+    </div>
+    <div class="controls" id="controls"></div>
+  `;
+  document.getElementById("quit").onclick = ()=>{ session=null; render(); };
+
+  if(useMcq) renderMcq(card); else renderRecall(card);
+}
+
+function renderMcq(card){
+  const {opts, correct} = buildOptions(card);
+  const body = document.getElementById("body");
+  body.innerHTML = `<div class="opts">${opts.map((o,i)=>
+    `<button class="opt" data-i="${i}"><span class="mk">${"ABCD"[i]}</span>${enc(o)}</button>`).join("")}</div>`;
+  let answered=false;
+  body.querySelectorAll(".opt").forEach(btn=>{
+    btn.onclick=()=>{
+      if(answered) return; answered=true;
+      const chosen = opts[+btn.dataset.i];
+      const right = norm(chosen)===norm(correct);
+      body.querySelectorAll(".opt").forEach(b=>{
+        const oc = opts[+b.dataset.i];
+        if(norm(oc)===norm(correct)) b.classList.add("correct");
+        else if(b===btn) b.classList.add("wrong");
+        else b.classList.add("dim");
+        b.style.pointerEvents="none";
+      });
+      // reveal explanation
+      const exp=document.createElement("div");
+      exp.innerHTML=`<div class="divider"></div><div class="back">${md(card.back)}</div>`;
+      body.appendChild(exp);
+      applyGrade(card.id, right? 4 : 1);
+      session.answered++; if(right) session.right++;
+      saveProg();
+      const ctl=document.getElementById("controls");
+      ctl.innerHTML=`<button class="mcq-next" id="next">${right?'Correct — next':'Got it — next'}</button>`;
+      document.getElementById("next").onclick=advance;
+    };
+  });
+  document.getElementById("controls").innerHTML="";
+}
+
+function renderRecall(card){
+  const ctl=document.getElementById("controls");
+  ctl.innerHTML=`<button class="reveal-btn" id="reveal">Show answer</button>`;
+  document.getElementById("reveal").onclick=()=>{
+    document.getElementById("body").innerHTML=
+      `<div class="divider"></div><div class="back">${md(card.back)}</div>`;
+    ctl.innerHTML=`<div class="grades">
+      <button class="grade g-again" data-g="1">Again<small>&lt;1m</small></button>
+      <button class="grade g-hard" data-g="3">Hard<small>early</small></button>
+      <button class="grade g-good" data-g="4">Good<small>on track</small></button>
+      <button class="grade g-easy" data-g="5">Easy<small>+</small></button>
+    </div>`;
+    ctl.querySelectorAll(".grade").forEach(b=>b.onclick=()=>{
+      applyGrade(card.id, +b.dataset.g);
+      session.answered++; if(+b.dataset.g>=3) session.right++;
+      saveProg(); advance();
+    });
+  };
+}
+
+function advance(){
+  const card = session.queue[session.i];
+  const s = PROG[card.id];
+  // if lapsed this session (learningLeft>0), requeue near the end
+  if(s && s.learningLeft>0){
+    session.queue.push(card);
+  }
+  session.i++;
+  render();
+}
+
+function renderDone(){
+  const acc = session.answered? Math.round(100*session.right/session.answered):0;
+  subhead.textContent = `${CARDS.length} cards`;
+  main.innerHTML=`
+    <div class="center-msg">
+      <div class="em">✓</div>
+      <h2>Session complete</h2>
+      <div>${session.answered} cards · ${acc}% correct · ${session.startedTopic}</div>
+      <button class="cta" id="again" style="max-width:260px;margin-top:20px">Study more</button>
+      <button class="cta sub" id="home" style="max-width:260px">Back to home</button>
+    </div>`;
+  document.getElementById("again").onclick=()=>buildSession(filterTopic);
+  document.getElementById("home").onclick=()=>{ session=null; render(); };
+}
+
+/* ---------- stats screen ---------- */
+function renderStats(){
+  const ts = topicStats();
+  const seen = CARDS.filter(c=>PROG[c.id]&&PROG[c.id].seen).length;
+  let totC=0,totA=0; CARDS.forEach(c=>{const s=PROG[c.id];if(s){totC+=s.correct;totA+=s.correct+s.wrong;}});
+  const acc = totA?Math.round(100*totC/totA):0;
+  const order = Object.entries(ts).sort((a,b)=>(a[1].acc??1)-(b[1].acc??1));
+  main.innerHTML=`
+    <div class="progress-top"><button class="iconbtn" id="back">‹ Home</button>
+      <div class="pcount" style="margin-left:auto">Overall ${acc}% · ${totA} answered</div></div>
+    <div class="section-h">Weakest topics first</div>
+    ${order.map(([t,o])=>{
+      const acc=o.acc==null?"—":Math.round(o.acc*100)+"%";
+      return `<div class="topic ${o.weak?'weak':''}">
+        <div class="top"><span>${enc(t)}</span>${o.weak?'<span class="flag">WEAK</span>':''}
+          <span class="spacer"></span>
+          <span class="cnt">${o.mastered}/${o.total} mastered · ${acc}</span></div>
+        <div class="bar"><i style="width:${o.masteryPct}%"></i></div>
+      </div>`;}).join("")}
+    <div class="tiny">Accuracy is your correct rate on answered cards. Mastery = cards on a 3-week+ interval.</div>`;
+  document.getElementById("back").onclick=()=>{ session=null; render(); };
+}
+
+/* ---------- settings ---------- */
+function openSettings(){
+  const sheet=document.createElement("div");
+  sheet.className="sheet-bg";
+  sheet.innerHTML=`<div class="sheet" onclick="event.stopPropagation()">
+    <h3>Settings</h3>
+    <div class="row"><div><div class="lab">Multiple choice</div>
+      <div class="desc">MCQ for cards with a discrete answer; recall otherwise</div></div>
+      <div class="switch ${CFG.mcq?'on':''}" id="swMcq"><i></i></div></div>
+    <div class="row"><div><div class="lab">Show my history on cards</div>
+      <div class="desc">seen count, right/wrong, next interval</div></div>
+      <div class="switch ${CFG.showHistory?'on':''}" id="swHist"><i></i></div></div>
+    <div class="row"><div><div class="lab">Cards per session</div></div>
+      <div class="stepper"><button id="ssM">−</button><b id="ssV">${CFG.sessionSize}</b><button id="ssP">+</button></div></div>
+    <div class="row"><div><div class="lab">New cards per session</div>
+      <div class="desc">caps how many fresh incorrects appear at once</div></div>
+      <div class="stepper"><button id="npM">−</button><b id="npV">${CFG.newPerSession}</b><button id="npP">+</button></div></div>
+    <button class="danger" id="reset">Reset all progress</button>
+    <div class="tiny">Progress is saved on this device. Reloading the app fetches new cards you've logged, keeping your history.</div>
+  </div>`;
+  sheet.onclick=()=>document.body.removeChild(sheet);
+  document.body.appendChild(sheet);
+  const tog=(k,el)=>{CFG[k]=!CFG[k];el.classList.toggle("on");saveCfg();};
+  sheet.querySelector("#swMcq").onclick=e=>tog("mcq",e.currentTarget);
+  sheet.querySelector("#swHist").onclick=e=>tog("showHistory",e.currentTarget);
+  const step=(k,el,d,min,max)=>{CFG[k]=Math.max(min,Math.min(max,CFG[k]+d));el.textContent=CFG[k];saveCfg();};
+  sheet.querySelector("#ssM").onclick=()=>step("sessionSize",sheet.querySelector("#ssV"),-5,5,100);
+  sheet.querySelector("#ssP").onclick=()=>step("sessionSize",sheet.querySelector("#ssV"),5,5,100);
+  sheet.querySelector("#npM").onclick=()=>step("newPerSession",sheet.querySelector("#npV"),-5,0,100);
+  sheet.querySelector("#npP").onclick=()=>step("newPerSession",sheet.querySelector("#npV"),5,0,100);
+  sheet.querySelector("#reset").onclick=()=>{
+    if(confirm("Erase all study progress on this device? Cards stay; scheduling resets.")){
+      PROG={}; saveProg(); document.body.removeChild(sheet); session=null; render(); }
+  };
+}
+
+/* ---------- utils ---------- */
+function enc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function dec(s){const d=document.createElement("textarea");d.innerHTML=s;return d.value;}
+
+document.getElementById("gearBtn").onclick=openSettings;
+document.getElementById("statsBtn").onclick=()=>{session=null;renderStats();};
+
+/* ---------- boot ---------- */
+async function boot(){
+  try{
+    const res = await fetch("deck.json?ts="+now());   // bust cache for daily updates
+    DECK = await res.json();
+    CARDS = DECK.cards;
+    byId = {}; CARDS.forEach(c=>byId[c.id]=c);
+    // prune progress for cards no longer present (keep for possible return)
+  }catch(e){
+    DECK=null; CARDS=[];
+    main.innerHTML=`<div class="banner">Couldn't load deck.json. If you opened this file directly, it needs to be served from the same folder as deck.json (that's what the hosted URL does).</div>`;
+    return;
+  }
+  render();
+}
+boot();
+</script>
+</body>
+</html>
